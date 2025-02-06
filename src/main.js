@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 
@@ -8,6 +8,13 @@ process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
+}
+
+async function handleFileOpen () {
+  const { canceled, filePaths } = await dialog.showOpenDialog()
+  if (!canceled) {
+    return filePaths[0]
+  }
 }
 
 const createWindow = () => {
@@ -42,6 +49,10 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+  // Bidirectional communication between rendering process and main process
+  ipcMain.handle('dialog:openFile', handleFileOpen)
+  
   createWindow();
 
   // On OS X it's common to re-create a window in the app when the

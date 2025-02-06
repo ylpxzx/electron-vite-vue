@@ -11,9 +11,12 @@
     <div>
       <RouterLink to="/renderToMain">Render-Process <span style="font-size: 10px;">--></span> Main-Process</RouterLink>
     </div>
+    <div>
+      <RouterLink to="/renderToMainTwoWay">Render-Process <span style="font-size: 10px;"><--></span> Main-Process
+      </RouterLink>
+    </div>
   </nav>
   <div style="margin-top: 20px; border: 1px solid grey; padding: 20px; border-radius: 10px;">
-    <!-- 该处得加入keep-alive，否则切换路由时会重新渲染组件，导致消息端口监听器失效 -->
     <router-view></router-view>
   </div>
 </template>
